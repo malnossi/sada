@@ -1,0 +1,64 @@
+[package]
+name = "Sada"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "sada_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# Tauri 2.0 — desktop shell
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Async runtime — Tokio full for network + file I/O
+tokio = { version = "1", features = ["full"] }
+
+# Cross-platform audio capture
+cpal = "0.15"
+
+# Lock-free SPSC ring buffer (audio → encoder, NEVER use Mutex here)
+ringbuf = "0.4"
+
+# Audio encoding
+lame = "0.1"
+opus = "0.3"
+audiopus_sys = { version = "0.2.2", default-features = false, features = ["static"] }
+vorbis-encoder = "0.1.4"
+fdk-aac = "0.8.0"
+
+# Networking — raw TCP for Icecast/ICY protocol
+base64 = "0.22"
+percent-encoding = "2"
+url = "2"
+bytes = "1"
+native-tls = "0.2"
+tokio-native-tls = "0.3"
+
+# Metadata updates via HTTP admin API (NOT for source streaming)
+reqwest = { version = "0.12", features = ["json"] }
+
+# Error handling
+anyhow = "1"
+thiserror = "2"
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Config persistence
+dirs = "6"
+
+# Utilities
+bytemuck = "1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
